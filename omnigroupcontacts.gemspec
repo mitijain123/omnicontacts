@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec'
 
   gem.version = OmniGroupContacts::VERSION  
-  gem.homepage = 'http://github.com/mitijain123/omnigroupcontacts'
+  gem.homepage = 'http://github.com/mitijain123/omni_contacts'
   gem.require_paths = ['lib']
   gem.required_rubygems_version = Gem::Requirement.new('>= 1.3.6') if gem.respond_to? :required_rubygems_version=
   gem.summary = gem.description
