@@ -1,10 +1,10 @@
 require "spec_helper"
-require "omnicontacts/middleware/oauth2"
+require "omnigroupcontacts/middleware/oauth2"
 
-describe OmniContacts::Middleware::OAuth2 do
+describe OmniGroupContacts::Middleware::OAuth2 do
 
   before(:all) do
-    class OAuth2Middleware < OmniContacts::Middleware::OAuth2
+    class OAuth2Middleware < OmniGroupContacts::Middleware::OAuth2
       def authorization_url
         "http://www.example.com"
       end
@@ -55,7 +55,7 @@ describe OmniContacts::Middleware::OAuth2 do
     it "should fetch the contacts" do
       get '/redirect_path?code=ABC'
       last_response.should be_ok
-      last_request.env["omnicontacts.contacts"].size.should be(1)
+      last_request.env["omnigroupcontacts.contacts"].size.should be(1)
     end
 
     it "should redirect to failure page because user did not allow access to contacts list" do

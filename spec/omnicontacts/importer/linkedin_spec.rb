@@ -1,9 +1,9 @@
 require "spec_helper"
-require "omnicontacts/importer/linkedin"
+require "omnigroupcontacts/importer/linkedin"
 
-describe OmniContacts::Importer::Linkedin do
+describe OmniGroupContacts::Importer::Linkedin do
 
-  let(:linkedin) { OmniContacts::Importer::Linkedin.new({}, "client_id", "client_secret", state: "ipsaeumeaque") }
+  let(:linkedin) { OmniGroupContacts::Importer::Linkedin.new({}, "client_id", "client_secret", state: "ipsaeumeaque") }
 
   let(:contacts_as_json) do
     "{

@@ -1,5 +1,5 @@
-require "omnicontacts/authorization/oauth1"
-require "omnicontacts/middleware/base_oauth"
+require "omnigroupcontacts/authorization/oauth1"
+require "omnigroupcontacts/middleware/base_oauth"
 
 # This class is an OAuth 1.0 Rack middleware.
 #
@@ -7,7 +7,7 @@ require "omnicontacts/middleware/base_oauth"
 # implement the following methods:
 # * fetch_token_from_token_and_verifier -> this method has to
 #   fetch the list of contacts from the authorization server.
-module OmniContacts
+module OmniGroupContacts
   module Middleware
     class OAuth1 < BaseOAuth
       include Authorization::OAuth1

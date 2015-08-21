@@ -1,9 +1,9 @@
 require "spec_helper"
-require "omnicontacts/parse_utils"
+require "omnigroupcontacts/parse_utils"
 
-include OmniContacts::ParseUtils
+include OmniGroupContacts::ParseUtils
 
-describe OmniContacts::ParseUtils do
+describe OmniGroupContacts::ParseUtils do
   describe "normalize_name" do
     it "should remove trailing spaces" do
       result = normalize_name("John ")

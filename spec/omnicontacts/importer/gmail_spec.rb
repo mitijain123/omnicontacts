@@ -1,11 +1,11 @@
 require "spec_helper"
-require "omnicontacts/importer/gmail"
+require "omnigroupcontacts/importer/gmail"
 
-describe OmniContacts::Importer::Gmail do
+describe OmniGroupContacts::Importer::Gmail do
 
-  let(:gmail) { OmniContacts::Importer::Gmail.new({}, "client_id", "client_secret") }
+  let(:gmail) { OmniGroupContacts::Importer::Gmail.new({}, "client_id", "client_secret") }
 
-  let(:gmail_with_scope_args) { OmniContacts::Importer::Gmail.new({}, "client_id", "client_secret", {scope: "https://www.google.com/m8/feeds https://www.googleapis.com/auth/userinfo#email https://www.googleapis.com/auth/contacts.readonly"}) }
+  let(:gmail_with_scope_args) { OmniGroupContacts::Importer::Gmail.new({}, "client_id", "client_secret", {scope: "https://www.google.com/m8/feeds https://www.googleapis.com/auth/userinfo#email https://www.googleapis.com/auth/contacts.readonly"}) }
   
   let(:self_response) {
     '{
@@ -179,7 +179,7 @@ describe OmniContacts::Importer::Gmail do
 
       gmail.fetch_contacts_using_access_token token, token_type
 
-      user = gmail.instance_variable_get(:@env)["omnicontacts.user"]
+      user = gmail.instance_variable_get(:@env)["omnigroupcontacts.user"]
       user.should_not be_nil
       user[:id].should eq("16482944006464829443")
       user[:first_name].should eq("Chris")

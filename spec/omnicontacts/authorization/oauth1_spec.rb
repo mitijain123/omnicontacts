@@ -1,12 +1,12 @@
 require "spec_helper"
-require "omnicontacts/authorization/oauth1"
+require "omnigroupcontacts/authorization/oauth1"
 
-describe OmniContacts::Authorization::OAuth1 do
+describe OmniGroupContacts::Authorization::OAuth1 do
 
   before(:all) do
     OAuth1TestClass= Struct.new(:consumer_key, :consumer_secret, :auth_host, :auth_token_path, :auth_path, :access_token_path, :callback)
     class OAuth1TestClass
-      include OmniContacts::Authorization::OAuth1
+      include OmniGroupContacts::Authorization::OAuth1
     end
   end
 

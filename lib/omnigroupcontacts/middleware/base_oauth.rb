@@ -5,7 +5,7 @@
 # the following methods:
 # * request_authorization_from_user 
 # * fetch_contatcs
-module OmniContacts
+module OmniGroupContacts
   module Middleware
     class BaseOAuth
 
@@ -27,7 +27,7 @@ module OmniContacts
       # * user is redirected back to the application 
       #   from the authorization site. In this case the list
       #   of contacts is fetched and stored in the variables
-      #   omnicontacts.contacts within the Rack env variable.
+      #   omnigroupcontacts.contacts within the Rack env variable.
       #   Once that is done the next middleware component is called.
       # * user visits any other resource. In this case the request
       #   is simply forwarded to the next middleware component.
@@ -63,14 +63,14 @@ module OmniContacts
           @env["omnicontacts.contacts"] = if test_mode?
             IntegrationTest.instance.mock_fetch_contacts(self)
           else
-            fetch_contacts
-          end
+            fetch_groups
+          end          
           @app.call(@env)
         end
       end
 
       def set_current_user user
-        @env["omnicontacts.user"] = user
+        @env["omnigroupcontacts.user"] = user
       end
 
       #  This method rescues executes a block of code and
@@ -94,7 +94,7 @@ module OmniContacts
       end
 
       def session
-        raise "You must provide a session to use OmniContacts" unless @env["rack.session"]
+        raise "You must provide a session to use omnigroupcontacts" unless @env["rack.session"]
         @env["rack.session"]
       end
 
@@ -103,7 +103,7 @@ module OmniContacts
       end
 
       def base_prop_name
-        "omnicontacts." + class_name
+        "omnigroupcontacts." + class_name
       end
 
       def append_state_query(target_url)

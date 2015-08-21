@@ -1,9 +1,9 @@
 require "spec_helper"
-require "omnicontacts/importer/facebook"
+require "omnigroupcontacts/importer/facebook"
 
-describe OmniContacts::Importer::Facebook do
+describe OmniGroupContacts::Importer::Facebook do
 
-  let(:facebook) { OmniContacts::Importer::Facebook.new({}, "client_id", "client_secret") }
+  let(:facebook) { OmniGroupContacts::Importer::Facebook.new({}, "client_id", "client_secret") }
 
   let(:self_response) {
     '{
@@ -104,7 +104,7 @@ describe OmniContacts::Importer::Facebook do
 
       facebook.fetch_contacts_using_access_token token, token_type
 
-      user = facebook.instance_variable_get(:@env)["omnicontacts.user"]
+      user = facebook.instance_variable_get(:@env)["omnigroupcontacts.user"]
       user.should_not be_nil
       user[:id].should eq("543216789")
       user[:first_name].should eq("Chris")

@@ -1,11 +1,11 @@
 require "spec_helper"
-require "omnicontacts"
-require "omnicontacts/middleware/base_oauth"
+require "omnigroupcontacts"
+require "omnigroupcontacts/middleware/base_oauth"
 
-describe OmniContacts::Middleware::BaseOAuth do
+describe OmniGroupContacts::Middleware::BaseOAuth do
   
   before(:all) do 
-    class TestProvider < OmniContacts::Middleware::BaseOAuth
+    class TestProvider < OmniGroupContacts::Middleware::BaseOAuth
       def initialize app, consumer_key, consumer_secret, options = {}
         super app, options
       end
@@ -14,7 +14,7 @@ describe OmniContacts::Middleware::BaseOAuth do
         "#{ MOUNT_PATH }testprovider/callback"
       end
     end
-    OmniContacts.integration_test.enabled = true
+    omnigroupcontacts.integration_test.enabled = true
   end
 
   let(:app) {
@@ -25,14 +25,14 @@ describe OmniContacts::Middleware::BaseOAuth do
   }
   
   it "should return a preconfigured list of contacts" do
-    OmniContacts.integration_test.mock(:testprovider, :email => "user@example.com")
+    omnigroupcontacts.integration_test.mock(:testprovider, :email => "user@example.com")
     get "#{ MOUNT_PATH }testprovider"
     get "#{ MOUNT_PATH }testprovider/callback"
-    last_request.env["omnicontacts.contacts"].first[:email].should eq("user@example.com")
+    last_request.env["omnigroupcontacts.contacts"].first[:email].should eq("user@example.com")
   end
 
   it "should redurect to failure url" do
-    OmniContacts.integration_test.mock(:testprovider, "some_error" )
+    omnigroupcontacts.integration_test.mock(:testprovider, "some_error" )
     get "#{ MOUNT_PATH }testprovider"
     get "#{MOUNT_PATH }testprovider/callback"
     last_response.should be_redirect
@@ -40,14 +40,14 @@ describe OmniContacts::Middleware::BaseOAuth do
   end
   
   it "should pass through state query params to the failure url" do
-    OmniContacts.integration_test.mock(:testprovider, "some_error" )
+    omnigroupcontacts.integration_test.mock(:testprovider, "some_error" )
     get "#{MOUNT_PATH }testprovider/callback?state=/parent/resource/id"
     last_response.headers["location"].should eq("#{ MOUNT_PATH }failure?error_message=internal_error&importer=testprovider&state=/parent/resource/id")
   end
   
   after(:all) do 
-    OmniContacts.integration_test.enabled = false
-    OmniContacts.integration_test.clear_mocks
+    omnigroupcontacts.integration_test.enabled = false
+    omnigroupcontacts.integration_test.clear_mocks
   end
   
 end

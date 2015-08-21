@@ -1,10 +1,10 @@
 require "spec_helper"
-require "omnicontacts/middleware/oauth1"
+require "omnigroupcontacts/middleware/oauth1"
 
-describe OmniContacts::Middleware::OAuth1 do
+describe OmniGroupContacts::Middleware::OAuth1 do
 
   before(:all) do
-    class OAuth1Middleware < OmniContacts::Middleware::OAuth1
+    class OAuth1Middleware < OmniGroupContacts::Middleware::OAuth1
       def self.mock_auth_token_resp
         @mock_auth_token_resp ||= Object.new
       end
@@ -65,7 +65,7 @@ describe OmniContacts::Middleware::OAuth1 do
       OAuth1Middleware.mock_session.should_receive(:[]).and_return("oauth_token_secret")
       get "#{ MOUNT_PATH }oauth1middleware/callback?oauth_token=token&oauth_verifier=verifier"
       last_response.should be_ok
-      last_request.env["omnicontacts.contacts"].size.should be(1)
+      last_request.env["omnigroupcontacts.contacts"].size.should be(1)
     end
 
     it "should redirect to failure url if oauth_token_secret is not found in the session" do

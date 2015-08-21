@@ -1,4 +1,4 @@
-require "omnicontacts/http_utils"
+require "omnigroupcontacts/http_utils"
 require "json"
 
 # This module represents an OAuth 2.0 client.
@@ -12,7 +12,7 @@ require "json"
 # * redirect_path -> the path the authorization server has to redirect the user back after authorization
 # * auth_token_path -> the path to query once the user has granted permission to the application
 # * scope -> the scope necessary to acquire the contacts list.
-module OmniContacts
+module OmniGroupContacts
   module Authorization
     module OAuth2
       include HTTPUtils

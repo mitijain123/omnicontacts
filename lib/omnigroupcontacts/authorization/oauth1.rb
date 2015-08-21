@@ -1,4 +1,4 @@
-require "omnicontacts/http_utils"
+require "omnigroupcontacts/http_utils"
 require "base64"
 
 # This module represent a OAuth 1.0 Client.
@@ -12,7 +12,7 @@ require "base64"
 # * callback -> the callback to include during the redirection step
 # * auth_path -> the path on the authorization server to redirect the user to
 # * access_token_path -> the path to query in order to obtain the access token
-module OmniContacts
+module OmniGroupContacts
   module Authorization
     module OAuth1
       include HTTPUtils

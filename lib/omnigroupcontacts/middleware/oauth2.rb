@@ -1,5 +1,5 @@
-require "omnicontacts/authorization/oauth2"
-require "omnicontacts/middleware/base_oauth"
+require "omnigroupcontacts/authorization/oauth2"
+require "omnigroupcontacts/middleware/base_oauth"
 
 # This class is a OAuth 2 Rack middleware.
 #
@@ -8,7 +8,7 @@ require "omnicontacts/middleware/base_oauth"
 # * fetch_contacts_using_access_token -> it
 #   fetches the list of contacts from the authorization
 #   server.
-module OmniContacts
+module OmniGroupContacts
   module Middleware
     class OAuth2 < BaseOAuth
       include Authorization::OAuth2
@@ -41,7 +41,7 @@ module OmniContacts
       # Finally it returns the list of contacts.
       # If no authorization code is found in the query string an
       # AuthoriazationError is raised.
-      def fetch_contacts
+      def fetch_groups
         code = query_string_to_map(@env["QUERY_STRING"])["code"]
         if code
           refresh_token = session[refresh_token_prop_name(code)]
@@ -50,12 +50,25 @@ module OmniContacts
                                                       else
                                                         fetch_access_token(code)
                                                       end
-          contacts = fetch_contacts_using_access_token(access_token, token_type)
+          groups = fetch_groups_using_access_token(access_token, token_type)
+          group_contacts = fetch_group_contacts(groups, access_token, token_type)
           session[refresh_token_prop_name(code)] = refresh_token if refresh_token
-          contacts
+          group_contacts
         else
           raise AuthorizationError.new("User did not grant access to contacts list")
         end
+      end
+
+      def fetch_group_contacts(groups, access_token, token_type)
+        group_contacts_all = {}
+        
+        groups.each do |group|
+          Rails.logger.info "---------#{group.inspect}---------"
+          group_contacts = fetch_contacts_using_access_token(access_token, token_type, group[:id])
+          group_contacts_all[group[:title]] = group_contacts
+        end
+
+        group_contacts_all
       end
 
       def refresh_token_prop_name code

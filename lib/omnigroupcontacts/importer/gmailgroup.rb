@@ -1,9 +1,9 @@
-require "omnicontacts/parse_utils"
-require "omnicontacts/middleware/oauth2"
+require "omnigroupcontacts/parse_utils"
+require "omnigroupcontacts/middleware/oauth2"
 
-module OmniContacts
+module OmniGroupContacts
   module Importer
-    class Gmail < Middleware::OAuth2
+    class Gmailgroup < Middleware::OAuth2
       include ParseUtils
 
       attr_reader :auth_host, :authorize_path, :auth_token_path, :scope
@@ -15,14 +15,21 @@ module OmniContacts
         @auth_token_path = "/o/oauth2/token"
         @scope = (args[3] && args[3][:scope]) || "https://www.google.com/m8/feeds https://www.googleapis.com/auth/userinfo#email https://www.googleapis.com/auth/userinfo.profile"
         @contacts_host = "www.google.com"
-        @contacts_path = "/m8/feeds/contacts/default/full"
+        @contacts_path = "/m8/feeds/groups/default/full"
         @max_results =  (args[3] && args[3][:max_results]) || 100
         @self_host = "www.googleapis.com"
         @profile_path = "/oauth2/v1/userinfo"
       end
 
-      def fetch_contacts_using_access_token access_token, token_type
+      def fetch_groups_using_access_token access_token, token_type
         fetch_current_user(access_token, token_type)
+        groups_response = https_get(@contacts_host, @contacts_path, contacts_req_params, contacts_req_headers(access_token, token_type))
+        groups_from_response groups_response
+      end
+
+      def fetch_contacts_using_access_token access_token, token_type, group_id
+        fetch_current_user(access_token, token_type)
+        @contacts_path = "/m8/feeds/contacts/default/full?&group=#{group_id}"
         contacts_response = https_get(@contacts_host, @contacts_path, contacts_req_params, contacts_req_headers(access_token, token_type))
         contacts_from_response contacts_response
       end
@@ -43,9 +50,28 @@ module OmniContacts
         {"GData-Version" => "3.0", "Authorization" => "#{token_type} #{token}"}
       end
 
+      def groups_from_response response_as_json
+        response = JSON.parse(response_as_json)
+        
+        return [] if response['feed'].nil? || response['feed']['entry'].nil?
+        groups = []
+        return groups if response.nil?
+        response['feed']['entry'].each do |entry|
+          group = {
+            :id => nil,
+            :title => nil
+          }
+          group[:id] = entry['id']["$t"]
+          group[:title] = entry['title']["$t"]
+
+          groups << group
+        end
+        groups
+
+      end
+
       def contacts_from_response response_as_json
         response = JSON.parse(response_as_json)
-
         return [] if response['feed'].nil? || response['feed']['entry'].nil?
         contacts = []
         return contacts if response.nil?
@@ -65,7 +91,8 @@ module OmniContacts
                       :phone_numbers => nil,
                       :dates => nil,
                       :company => nil,
-                      :position => nil
+                      :position => nil,
+                      :groups => nil
           }
           contact[:id] = entry['id']['$t'] if entry['id']
           if entry['gd$name']

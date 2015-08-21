@@ -1,5 +1,5 @@
 require "spec_helper"
-require "omnicontacts/integration_test"
+require "omnigroupcontacts/integration_test"
 
 describe IntegrationTest do
 

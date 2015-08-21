@@ -1,7 +1,7 @@
 require "spec_helper"
-require "omnicontacts/importer/yahoo"
+require "omnigroupcontacts/importer/yahoo"
 
-describe OmniContacts::Importer::Yahoo do
+describe OmniGroupContacts::Importer::Yahoo do
 
   describe "fetch_contacts_from_token_and_verifier" do
     let(:self_response) {
@@ -37,7 +37,7 @@ describe OmniContacts::Importer::Yahoo do
         }
       }' }
 
-    let(:yahoo) { OmniContacts::Importer::Yahoo.new({}, "consumer_key", "consumer_secret") }
+    let(:yahoo) { OmniGroupContacts::Importer::Yahoo.new({}, "consumer_key", "consumer_secret") }
 
     before(:each) do
       yahoo.instance_variable_set(:@env, {})
@@ -108,7 +108,7 @@ describe OmniContacts::Importer::Yahoo do
       yahoo.should_receive(:https_get).and_return(contacts_as_json)
       yahoo.fetch_contacts_from_token_and_verifier "auth_token", "auth_token_secret", "oauth_verifier"
 
-      user = yahoo.instance_variable_get(:@env)["omnicontacts.user"]
+      user = yahoo.instance_variable_get(:@env)["omnigroupcontacts.user"]
       user.should_not be_nil
       user[:id].should eq('PCLASP523T3E2R5TFMHDW9KWQQ')
       user[:first_name].should eq('Chris')

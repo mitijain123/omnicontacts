@@ -4,7 +4,7 @@ require "cgi"
 require "openssl"
 
 # This module contains a set of utility methods  related to the HTTP protocol.
-module OmniContacts
+module OmniGroupContacts
   module HTTPUtils
 
     SSL_PORT = 443

@@ -1,10 +1,10 @@
 require "spec_helper"
-require "omnicontacts/importer/hotmail"
+require "omnigroupcontacts/importer/hotmail"
 
-describe OmniContacts::Importer::Hotmail do
+describe OmniGroupContacts::Importer::Hotmail do
 
   let(:permissions) { "perm1, perm2" }
-  let(:hotmail) { OmniContacts::Importer::Hotmail.new({}, "client_id", "client_secret", {:permissions => permissions}) }
+  let(:hotmail) { OmniGroupContacts::Importer::Hotmail.new({}, "client_id", "client_secret", {:permissions => permissions}) }
 
   let(:self_response) {
     '{
@@ -90,7 +90,7 @@ describe OmniContacts::Importer::Hotmail do
 
       hotmail.fetch_contacts_using_access_token token, token_type
 
-      user = hotmail.instance_variable_get(:@env)["omnicontacts.user"]
+      user = hotmail.instance_variable_get(:@env)["omnigroupcontacts.user"]
       user.should_not be_nil
       user[:id].should eq('4502de12390223d0')
       user[:first_name].should eq('Chris')

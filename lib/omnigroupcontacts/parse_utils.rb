@@ -1,4 +1,4 @@
-module OmniContacts
+module OmniGroupContacts
   module ParseUtils
 
     # return has of birthday day, month and year

@@ -1,6 +1,6 @@
-require "omnicontacts"
+require "omnigroupcontacts"
 
-module OmniContacts
+module OmniGroupContacts
   class Builder < Rack::Builder
     def initialize(app, &block)
       if rack14?
@@ -16,7 +16,7 @@ module OmniContacts
     end
 
     def importer importer, *args
-      middleware = OmniContacts::Importer.const_get(importer.to_s.capitalize)
+      middleware = OmniGroupContacts::Importer.const_get(importer.to_s.capitalize)
       use middleware, *args
     rescue NameError
       raise LoadError, "Could not find importer #{importer}."
